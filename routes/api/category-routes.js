@@ -35,8 +35,7 @@ router.get('/:id', (req, res) => {
     console.log(err);
     res.status(400).json(err);
   })
-
-  // TODO: be sure to include its associated Products
+  // ? be sure to include its associated Products
 });
 
 router.post('/', (req, res) => {

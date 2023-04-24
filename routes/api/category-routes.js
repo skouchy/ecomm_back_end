@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  // TODO: find one category by its `id` value
+  // ? find one category by its `id` value
   Category.findOne({
     attributes: ['category_name'],
     where: {

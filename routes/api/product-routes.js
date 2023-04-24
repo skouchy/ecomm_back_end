@@ -5,20 +5,20 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // get all products
 router.get('/', (req, res) => {
-  // find all products
-  // be sure to include its associated Category and Tag data
+  // TODO: find all products
+  // TODO: be sure to include its associated Category and Tag data
 });
 
 // get one product
 router.get('/:id', (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
+  // TODO: find a single product by its `id`
+  // TODO: be sure to include its associated Category and Tag data
 });
 
-// create new product
+// TODO: create new product
 router.post('/', (req, res) => {
-  /* req.body should look like this...
-    {
+  //  TODO: req.body should look like this...
+    /*{
       product_name: "Basketball",
       price: 200.00,
       stock: 3,
@@ -84,13 +84,13 @@ router.put('/:id', (req, res) => {
     })
     .then((updatedProductTags) => res.json(updatedProductTags))
     .catch((err) => {
-      // console.log(err);
+      console.log(err);
       res.status(400).json(err);
     });
 });
 
 router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
+  // TODO: delete one product by its `id` value
 });
 
 module.exports = router;

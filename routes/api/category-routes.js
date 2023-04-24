@@ -4,7 +4,7 @@ const { Category, Product } = require('../../models');
 // The `/api/categories` endpoint
 
 router.get('/', (req, res) => {
-  // TODO: find all categories
+  // ? find all categories
   Category.findAll({
     attributes: ['category_name']
   })
@@ -18,6 +18,18 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   // TODO: find one category by its `id` value
+  Category.findOne({
+    attributes: ['category_name'],
+    where: {
+      category_name: req.params.id
+    }
+  })
+  .then(dbOneCategory => res.json(dbOneCategory))
+  .catch(err => {
+    console.log(err);
+    res.status(400).json(err);
+  })
+
   // TODO: be sure to include its associated Products
 });
 

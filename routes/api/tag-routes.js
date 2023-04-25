@@ -6,20 +6,28 @@ const { Tag, Product, ProductTag } = require('../../models');
 router.get('/', (req, res) => {
   // ? find all tags
   Tag.findAll({
-    attributes: ['id', 'tag_name']
-    // include: [
-    //   {
-    //     model: Product,
-    //     attributes: ['Product_id']
-    //   }
-    // ]
+    attributes: ['id', 'tag_name'],
+    include: [
+      {
+        model: Product,
+        attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
+        include: {
+          model: ProductTag,
+          attributes: ['id', 'product_id', 'tag_id']
+        }
+      },
+      {
+        model: ProductTag,
+        attributes: ['product_id', 'tag_id']
+      }
+    ]
   })
-  .then(dbTagData => res.json(dbTagData))
-  .catch(err => {
-    console.log(err);
-    res.status(500).json(err);
-  })
-  // TODO: be sure to include its associated Product Tag data
+    .then(dbTagData => res.json(dbTagData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    })
+  // ! TODO: be sure to include its associated Product Tag data
 });
 
 router.get('/:id', (req, res) => {
@@ -29,11 +37,11 @@ router.get('/:id', (req, res) => {
       id: req.params.id
     }
   })
-  .then(dbOneTag => res.json(dbOneTag))
-  .catch(err => {
-    console.log(err);
-    res.status(400).json(err);
-  })
+    .then(dbOneTag => res.json(dbOneTag))
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    })
   // TODO: be sure to include its associated Product data
 });
 
@@ -42,14 +50,14 @@ router.post('/', (req, res) => {
   Tag.create({
     tag_name: req.body.tag_name
   })
-  .then(newTagData => {
-    console.log(newTagData);
-    res.json(newTagData);
-  })
-  .catch(err => {
-    console.log(err);
-    res.status(500).json(err);
-  });
+    .then(newTagData => {
+      console.log(newTagData);
+      res.json(newTagData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 router.put('/:id', (req, res) => {

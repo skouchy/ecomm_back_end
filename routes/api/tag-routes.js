@@ -23,13 +23,13 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  // TODO: find a single tag by its `id`
+  // ? find a single tag by its `id`
   Tag.findOne({
     where: {
       id: req.params.id
     }
   })
-  .then(dbTagData => res.json(dbTagData))
+  .then(dbOneTag => res.json(dbOneTag))
   .catch(err => {
     console.log(err);
     res.status(400).json(err);
@@ -39,6 +39,17 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   // TODO: create a new tag
+  Tag.create({
+    tag_name: req.body.tag_name
+  })
+  .then(newTagData => {
+    console.log(newTagData);
+    res.json(newTagData);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
 });
 
 router.put('/:id', (req, res) => {

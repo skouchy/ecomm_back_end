@@ -3,6 +3,7 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // The `/api/products` endpoint
 
+
 // get all products
 router.get('/', (req, res) => {
   // TODO: find all products
@@ -27,11 +28,6 @@ router.get('/', (req, res) => {
           model: ProductTag,
           attributes: ['id', 'product_id', 'tag_id']
         }
-      },
-      {
-        model: Tag,
-        attributes: ['id', 'tag_name'],
-        through: ProductTag
       }
     ]
   })

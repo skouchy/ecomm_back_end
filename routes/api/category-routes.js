@@ -6,7 +6,7 @@ const { Category, Product } = require('../../models');
 // * GET ALL from categories
 router.get('/', (req, res) => {
   Category.findAll({
-    attributes: ['category_name'],
+    attributes: ['id', 'category_name'],
     include: [
       {
         model: Product,
@@ -14,11 +14,11 @@ router.get('/', (req, res) => {
       }
     ]
   })
-  .then(dbCategoryData => res.json(dbCategoryData))
-  .catch(err => {
-    console.log(err);
-    res.status(500).json(err);
-  })
+    .then(dbCategoryData => res.json(dbCategoryData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    })
 });
 
 
@@ -36,31 +36,44 @@ router.get('/:id', (req, res) => {
       }
     ]
   })
-  .then(dbOneCategory => res.json(dbOneCategory))
-  .catch(err => {
-    console.log(err);
-    res.status(400).json(err);
-  })
+    .then(dbOneCategory => res.json(dbOneCategory))
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    })
 });
 
 
 // * CREATE a new category
 router.post('/', (req, res) => {
   Category.create({
-      category_name: req.body.category_name
+    category_name: req.body.category_name
   })
-  .then(newCategoryData => {
-    console.log(newCategoryData);
-    res.json(newCategoryData);
-  })
-  .catch(err => {
-    console.log(err);
-    res.status(500).json(err);
-  })
+    .then(newCategoryData => {
+      console.log(newCategoryData);
+      res.json(newCategoryData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    })
 });
 
+// * UPDATE a category by its `id` value
 router.put('/:id', (req, res) => {
-  // TODO: update a category by its `id` value
+  Category.update(req.body, {
+    where: {
+      id: req.params.id
+    },
+  })
+  .then((category) => {
+    console.log(category);
+    res.json(category);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(400).json(err);
+  });
 });
 
 router.delete('/:id', (req, res) => {

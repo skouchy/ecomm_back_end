@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
       console.log(err);
       res.status(500).json(err);
     })
-  // ! TODO: be sure to include its associated Product Tag data
+  // ? TODO: be sure to include its associated Product Tag data
 });
 
 router.get('/:id', (req, res) => {
@@ -31,14 +31,20 @@ router.get('/:id', (req, res) => {
   Tag.findOne({
     where: {
       id: req.params.id
-    }
+    },
+    include: [
+      {
+        model: Product,
+        attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+      }
+    ]
   })
     .then(dbOneTag => res.json(dbOneTag))
     .catch(err => {
       console.log(err);
       res.status(400).json(err);
     })
-  // TODO: be sure to include its associated Product data
+  // ? be sure to include its associated Product data
 });
 
 router.post('/', (req, res) => {

@@ -6,7 +6,7 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // get all products
 router.get('/', (req, res) => {
-  // TODO: find all products
+  // ? find all products
   Product.findAll({
     attributes: [
       'id',
@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
       'stock',
       'category_id'
     ],
-    // TODO: be sure to include its associated Category and Tag data
+    // ? be sure to include its associated Category and Tag data
     include: [
       {
         model: Category,
@@ -23,11 +23,7 @@ router.get('/', (req, res) => {
       },
       {
         model: Tag,
-        attributes: ['id', 'tag_name'],
-        include: {
-          model: ProductTag,
-          attributes: ['id', 'product_id', 'tag_id']
-        }
+        attributes: ['id', 'tag_name']
       }
     ]
   })
@@ -40,7 +36,7 @@ router.get('/', (req, res) => {
 
 // get one product
 router.get('/:id', (req, res) => {
-  // TODO: find a single product by its `id`
+  // ? find a single product by its `id`
   Product.findOne({
     attributes: ['product_name'],
     where: {
@@ -50,6 +46,10 @@ router.get('/:id', (req, res) => {
       {
         model: Category,
         attributes: ['category_name']
+      },
+      {
+        model: Tag,
+        attributes: ['tag_name']
       }
     ]
   })
@@ -61,49 +61,62 @@ router.get('/:id', (req, res) => {
       console.log(err);
       res.status(404).json(err);
     })
-  // TODO: be sure to include its associated Category and Tag data
+  // ? be sure to include its associated Category and Tag data
 });
 
 // TODO: create new product
 router.post('/', (req, res) => {
-  //  TODO: req.body should look like this...
+
+  const tagIds = req.body.tagIds; //.map(tagId => res.json(tagId)) // map over tagIds array and convert each value to an integer
+
   Product.create({
     product_name: req.body.product_name,
     price: req.body.price,
     stock: req.body.stock,
-    category_id: req.body.category_id
+    tagIds: tagIds // assign the modified tagIds array to the tagIds property
   })
-    /*{
-      product_name: "Basketball",
-      price: 200.00,
-      stock: 3,
-      tagIds: [1, 2, 3, 4]
+  .then(product => {
+    if (req.body.tagIds.length) {
+      const productTagIdArr = req.body.tagIds.map((tag_id) => {
+        return {
+          product_id: product.id,
+          tag_id,
+        };
+      });
+      return ProductTag.bulkCreate(productTagIdArr);
     }
-  */
-    .then((product) => res.status(200).json(product))
-    .catch((err) => {
-      console.log(err);
-      res.status(400).json(err);
-    });
-  //   // if there's product tags, we need to create pairings to bulk create in the ProductTag model
-  //   if (req.body.tagIds.length) {
-  //     const productTagIdArr = req.body.tagIds.map((tag_id) => {
-  //       return {
-  //         product_id: product.id,
-  //         tag_id,
-  //       };
-  //     });
-  //     return ProductTag.bulkCreate(productTagIdArr);
-  //   }
-  //   // if no product tags, just respond
-  //   res.status(200).json(product);
-  // })
-  // .then((productTagIds) => res.status(200).json(productTagIds))
-  // .catch((err) => {
-  //   console.log(err);
-  //   res.status(400).json(err);
-  // });
+    // if no product tags, just respond
+    res.status(200).json(product);
+  })
+  .then((product) => res.status(200).json(product))
+  .catch((err) => {
+    console.log(err);
+    res.status(400).json(err);
+  });
 });
+
+//   Product.create({
+//     product_name: req.body.product_name,
+//     price: req.body.price,
+//     stock: req.body.stock,
+//     tagIds: req.body.tagIds
+//   })
+//   // const tagIds = req.body.tagIds.map(tagId => {
+//     // parseInt(tagId)); // map over tagIds array and convert each value to an integer
+//   },
+//   // console.log(`11111111:  `, tagId);
+//   // console.log(`22222222:  `, tagIds);
+//   //  TODO: req.body should look like this...
+
+//   // .then((productTagIds) => res.status(200).json(productTagIds))
+//   // if there's product tags, we need to create pairings to bulk create in the ProductTag model
+// // })
+// // .catch((err) => {
+// //   console.log(err);
+// //   res.status(400).json(err);
+// );
+
+
 
 // update product
 router.put('/:id', (req, res) => {

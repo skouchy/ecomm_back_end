@@ -3,8 +3,8 @@ const { Category, Product } = require('../../models');
 
 // The `/api/categories` endpoint
 
+// * GET ALL from categories
 router.get('/', (req, res) => {
-  // ? find all categories
   Category.findAll({
     attributes: ['category_name'],
     include: [
@@ -19,11 +19,11 @@ router.get('/', (req, res) => {
     console.log(err);
     res.status(500).json(err);
   })
-  // ? be sure to include its associated Products
 });
 
+
+// * GET ONE category by its `id` value
 router.get('/:id', (req, res) => {
-  // ? find one category by its `id` value
   Category.findOne({
     attributes: ['category_name'],
     where: {
@@ -41,11 +41,11 @@ router.get('/:id', (req, res) => {
     console.log(err);
     res.status(400).json(err);
   })
-  // ? be sure to include its associated Products
 });
 
+
+// * CREATE a new category
 router.post('/', (req, res) => {
-  // ? create a new category
   Category.create({
       category_name: req.body.category_name
   })

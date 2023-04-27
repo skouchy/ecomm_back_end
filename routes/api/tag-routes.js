@@ -3,8 +3,9 @@ const { Tag, Product, ProductTag } = require('../../models');
 
 // The `/api/tags` endpoint
 
+
+// * GET ALL from tags
 router.get('/', (req, res) => {
-  // ? find all tags
   Tag.findAll({
     attributes: ['id', 'tag_name'],
     include: [
@@ -23,11 +24,11 @@ router.get('/', (req, res) => {
       console.log(err);
       res.status(500).json(err);
     })
-  // ? TODO: be sure to include its associated Product Tag data
 });
 
+
+// * GET ONE single tag by its `id`
 router.get('/:id', (req, res) => {
-  // ? find a single tag by its `id`
   Tag.findOne({
     where: {
       id: req.params.id
@@ -44,11 +45,11 @@ router.get('/:id', (req, res) => {
       console.log(err);
       res.status(400).json(err);
     })
-  // ? be sure to include its associated Product data
 });
 
+
+// * CREATE a new tag
 router.post('/', (req, res) => {
-  // TODO: create a new tag
   Tag.create({
     tag_name: req.body.tag_name
   })

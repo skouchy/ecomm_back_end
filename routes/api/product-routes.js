@@ -63,6 +63,7 @@ router.get('/:id', (req, res) => {
     })
 });
 
+
 // * CREATE new product
 router.post('/', (req, res) => {
   const tagIds = req.body.tagIds; // map over tagIds array 

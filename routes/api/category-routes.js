@@ -3,6 +3,7 @@ const { Category, Product } = require('../../models');
 
 // The `/api/categories` endpoint
 
+
 // * GET ALL from categories
 router.get('/', (req, res) => {
   Category.findAll({
@@ -77,8 +78,9 @@ router.put('/:id', (req, res) => {
   });
 });
 
+
+// * DELETE a category by its `id` value
 router.delete('/:id', (req, res) => {
-  // delete a category by its `id` value
   Category.destroy({
     where: {
       id: req.params.id
@@ -93,5 +95,7 @@ router.delete('/:id', (req, res) => {
     res.status(400).json(err);
   });
 });
+
+
 
 module.exports = router;

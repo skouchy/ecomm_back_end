@@ -99,7 +99,6 @@ router.post('/', (req, res) => {
 
 // * UPDATE product
 router.put('/:id', (req, res) => {
-  // update product data
   Product.update(req.body, {
     where: {
       id: req.params.id,
@@ -139,8 +138,9 @@ router.put('/:id', (req, res) => {
     });
 });
 
+
+// * DELETE one product by its `id` value
 router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
   Product.destroy({
     where: {
       id: req.params.id
@@ -155,5 +155,7 @@ router.delete('/:id', (req, res) => {
     res.status(400).json(err);
   });
 });
+
+
 
 module.exports = router;
